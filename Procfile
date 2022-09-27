@@ -1,2 +1,2 @@
-release: npx blitz prisma migrate deploy
+release: yarn start
 web: yarn start
