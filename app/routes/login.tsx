@@ -1,4 +1,4 @@
-import { Button, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Link, useCatch, useFetcher, useLoaderData, useNavigate, useSearchParams } from "@remix-run/react";
@@ -13,12 +13,13 @@ import { CustomCatchBoundary } from "~/core/components/CustomCatchBoundary";
 import { CustomErrorBoundary } from "~/core/components/CustomErrorBoundary";
 import { TextField } from "~/core/components/CustomTextField";
 import { OutlinedButton } from "~/core/components/OutlinedButton";
+import { PrimaryButton } from "~/core/components/PrimaryButton";
 import { ScrollAnimateUp } from "~/core/components/ScrollAnimateUp";
 import type { inferSafeParseErrors } from "~/core/validations";
 import { badRequest } from "~/core/validations";
 
 import { createUserSession, getUserId } from "~/session.server";
-import { verifyLogin } from "~/users/user.server";
+import { examplePassword, exampleUsername, verifyLogin } from "~/users/user.server";
 import { safeRedirect } from "~/utils";
 
 export const meta: MetaFunction = () => {
@@ -30,13 +31,13 @@ export const meta: MetaFunction = () => {
 export async function loader ({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) {
-    return redirect("/issues");
+    return redirect("/products");
   }
 
   const url = new URL(request.url);
   const message = url.searchParams.get("message") || '';
 
-  return json({ message });
+  return json({ exampleUsername, examplePassword, message });
 }
 
 const Schema = z.object({
@@ -79,7 +80,7 @@ export async function action ({ request }: ActionArgs) {
 
 export default function LoginPage () {
   const [searchParams] = useSearchParams();
-  const { message } = useLoaderData<typeof loader>();
+  const { exampleUsername, examplePassword, message } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<ActionData>();
 
   const isProcessing = !!fetcher.submission;
@@ -104,36 +105,36 @@ export default function LoginPage () {
               isSubmitting={isProcessing}
             >
               <input type="hidden" name="redirectTo" value={redirectTo} />
+              <CardSection noBottomBorder py={2}>
+                {fetcher.data?.formError && (
+                  <ScrollAnimateUp delay={0.25}>
+                    <CustomAlert status="error">
+                      {fetcher.data.formError}
+                    </CustomAlert>
+                  </ScrollAnimateUp>
+                )}
+              </CardSection>
               <CardSection noBottomBorder py={6}>
                 <TextField
                   formControlProps={{ labelProps: { color: "whiteAlpha.800" } }}
                   bg="white"
                   name="username"
-                  label="Username"
+                  label={`Username (Demo: ${ exampleUsername })`}
                   placeholder="JohnDoe"
                 />
                 <TextField
                   formControlProps={{ labelProps: { color: "whiteAlpha.800" } }}
                   bg="white"
                   name="password"
-                  label="Password"
+                  label={`Password (Demo: ${ examplePassword })`}
                   placeholder="Password"
                   type="password"
                 />
-                {fetcher.data?.formError && (
-                  <VStack py={2} align="stretch">
-                    <ScrollAnimateUp delay={0.25}>
-                      <CustomAlert status="error">
-                        {fetcher.data.formError}
-                      </CustomAlert>
-                    </ScrollAnimateUp>
-                  </VStack>
-                )}
               </CardSection>
               <CardSection noBottomBorder py={2}>
-                <Button type="submit" isDisabled={isProcessing} colorScheme="teal">
+                <PrimaryButton type="submit" isDisabled={isProcessing}>
                   {isProcessing ? "LOGGING IN..." : "LOG IN"}
-                </Button>
+                </PrimaryButton>
               </CardSection>
             </ActionContextProvider>
           </fetcher.Form>
