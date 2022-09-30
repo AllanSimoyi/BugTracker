@@ -13,9 +13,11 @@ export function CustomFormControl (props: CustomFormControlProps) {
   const { label, labelProps, helperText, error, children, ...formControlProps } = props;
   return (
     <FormControl isInvalid={!!error} {...formControlProps}>
-      <FormLabel style={{ width: "100%" }} {...labelProps}>
-        {label}
-      </FormLabel>
+      {label && (
+        <FormLabel style={{ width: "100%" }} {...labelProps}>
+          {label}
+        </FormLabel>
+      )}
       {children}
       {helperText && (
         <FormHelperText>{helperText}</FormHelperText>
