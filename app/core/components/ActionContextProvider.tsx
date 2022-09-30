@@ -39,7 +39,7 @@ export function ActionContextProvider
 export function useActionContext () {
   const context = useContext(ActionContext);
   if (!context) {
-    throw new Error(`useCloudinary must be used within a ActionContextProvider`);
+    throw new Error(`useActionContext must be used within a ActionContextProvider`);
   }
   return context;
 }
