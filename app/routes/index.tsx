@@ -6,10 +6,10 @@ import { CustomCatchBoundary } from "~/core/components/CustomCatchBoundary";
 import { CustomErrorBoundary } from "~/core/components/CustomErrorBoundary";
 import { getUserId } from "~/session.server";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader ({ request }: LoaderArgs) {
   const currentUserId = await getUserId(request);
   if (currentUserId) {
-    return redirect("/issues");
+    return redirect("/products");
   }
   return redirect("/login");
 }
