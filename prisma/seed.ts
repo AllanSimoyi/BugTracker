@@ -1,26 +1,27 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { OPEN_ISSUE } from "~/issues/lib/issues";
+import { examplePassword, exampleUsername } from "~/users/user.server";
 
 const prisma = new PrismaClient();
 
 async function seed () {
-  const username = "AllanSimoyi";
+  await prisma.comment.deleteMany();
+  await prisma.issue.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.user.deleteMany();
 
-  // cleanup the existing database
-  await prisma.user.delete({ where: { username } }).catch(() => {
-    // no worries if it doesn't exist yet
-  });
-
-  const hashedPassword = await bcrypt.hash("racheliscool", 10);
-
+  // await prisma.user
+  //   .delete({ where: { username: exampleUsername } })
+  //   .catch(() => {});
   const user = await prisma.user.create({
     data: {
-      username,
-      password: hashedPassword,
+      username: exampleUsername,
+      password: await bcrypt.hash(examplePassword, 10),
     },
   });
 
+  
   await prisma.product.createMany({
     data: [
       {
@@ -57,9 +58,7 @@ async function seed () {
       },
     ],
   });
-
   const products = await prisma.product.findMany();
-
   await products.reduce(async (acc, product) => {
     await acc;
     const issueData = {
@@ -78,8 +77,8 @@ async function seed () {
     });
   }, Promise.resolve());
 
+  
   const issues = await prisma.issue.findMany();
-
   await issues.reduce(async (acc, issue) => {
     await acc;
     const commentData = {
