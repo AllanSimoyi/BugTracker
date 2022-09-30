@@ -1,7 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { withEmotionCache } from '@emotion/react';
 import type { LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node'; // Depends on the runtime you choose
-import { json } from '@remix-run/node' // Depends on the runtime you choose
+import { json } from '@remix-run/node'; // Depends on the runtime you choose
 import {
   Links,
   LiveReload,
@@ -13,6 +13,7 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 import { ClientStyleContext, ServerStyleContext } from './context';
 import { getUser } from './session.server';
+import customStylesUrl from "./styles/custom.css";
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -26,9 +27,10 @@ export let links: LinksFunction = () => {
     { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
     {
       rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap',
+      href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap'
     },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "stylesheet", href: customStylesUrl }
   ]
 }
 
@@ -68,7 +70,7 @@ const Document = withEmotionCache(
             />
           ))}
         </head>
-        <body className="h-full bg-slate-100">
+        <body className="h-full bg-slate-900">
           {children}
           <ScrollRestoration />
           <Scripts />
