@@ -5,6 +5,9 @@ import { prisma } from "~/db.server";
 
 export type { User } from "@prisma/client";
 
+export const exampleUsername = "AllanSimoyi";
+export const examplePassword = "exAmpleP@55w0rd";
+
 export type UserWithoutPassword = Omit<User, "hashedPassword">;
 
 export async function getUserById (id: User["id"]) {
@@ -23,7 +26,7 @@ export async function createUser (props: CreateUserProps) {
   const { username, password } = props;
   return prisma.user.create({
     data: {
-      username: username.toLowerCase().trim(),
+      username: username.trim(),
       password: await bcrypt.hash(password.trim(), 10),
     },
   });
