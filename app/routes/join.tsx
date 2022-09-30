@@ -1,4 +1,4 @@
-import { Img, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Link, useCatch, useFetcher, useNavigate, useSearchParams } from "@remix-run/react";
@@ -7,8 +7,6 @@ import { z } from "zod";
 import { Hero } from "~/auth/components/Hero";
 import { PasswordSchema, UsernameSchema } from "~/auth/validations";
 import { ActionContextProvider } from "~/core/components/ActionContextProvider";
-import { Card } from "~/core/components/Card";
-import { CardHeading } from "~/core/components/CardHeading";
 import { CardSection } from "~/core/components/CardSection";
 import { CustomAlert } from "~/core/components/CustomAlert";
 import { CustomCatchBoundary } from "~/core/components/CustomCatchBoundary";
@@ -73,7 +71,7 @@ export async function action ({ request }: ActionArgs) {
   if (existingUser) {
     return badRequest({
       fields,
-      fieldErrors: { emailAddress: ["Username already taken"] },
+      fieldErrors: { username: ["Username already taken"] },
       formError: undefined,
     });
   }
@@ -90,74 +88,70 @@ export async function action ({ request }: ActionArgs) {
 export default function Join () {
   const [searchParams] = useSearchParams();
   const fetcher = useFetcher<ActionData>();
-  const isProcessing = !!fetcher.submission;
 
+  const isProcessing = !!fetcher.submission;
   const redirectTo = searchParams.get("redirectTo") || "/";
 
   return (
     <Hero>
-      <VStack justify={"center"} align="stretch" p={4} w={["100%", "80%", "40%"]}>
-        <VStack justify={"center"} align="center" p={4}>
-          <ScrollAnimateUp delay={0}>
-            <Link to="/">
-              <Img boxSize="40" objectFit="contain" src="images/logo.png" alt="Bug Tracker" />
-            </Link>
-          </ScrollAnimateUp>
-        </VStack>
+      <VStack justify={"center"} align="stretch" p={4}>
         <ScrollAnimateUp delay={0.25}>
-          <Card>
-            <fetcher.Form method="post">
-              <ActionContextProvider
-                fields={fetcher.data?.fields}
-                fieldErrors={fetcher.data?.fieldErrors}
-                formError={fetcher.data?.formError}
-                isSubmitting={isProcessing}
-              >
-                <input type="hidden" name="redirectTo" value={redirectTo} />
-                <CardHeading>Create Account</CardHeading>
-                <CardSection py={6}>
-                  <TextField
-                    name="username"
-                    label="Username"
-                    placeholder="JohnDoe"
-                  />
-                  <TextField
-                    name="password"
-                    label="Password"
-                    placeholder="Password"
-                    type="password"
-                  />
-                  <TextField
-                    name="passwordConfirmation"
-                    label="Re-enter Password"
-                    placeholder="Re-enter Password"
-                    type="password"
-                  />
-                  {fetcher.data?.formError && (
-                    <VStack py={2}>
-                      <ScrollAnimateUp delay={0}>
-                        <CustomAlert status="error">
-                          {fetcher.data?.formError}
-                        </CustomAlert>
-                      </ScrollAnimateUp>
-                    </VStack>
-                  )}
-                </CardSection>
-                <CardSection>
-                  <PrimaryButton type="submit" isDisabled={isProcessing}>
-                    {isProcessing ? "Creating Account..." : "Create Account"}
-                  </PrimaryButton>
-                </CardSection>
-              </ActionContextProvider>
-            </fetcher.Form>
-            <CardSection noBottomBorder>
-              <Link to="/login">
-                <OutlinedButton w="100%" isDisabled={isProcessing}>
-                  Already Have An Account
-                </OutlinedButton>
-              </Link>
-            </CardSection>
-          </Card>
+          <fetcher.Form method="post">
+            <ActionContextProvider
+              fields={fetcher.data?.fields}
+              fieldErrors={fetcher.data?.fieldErrors}
+              formError={fetcher.data?.formError}
+              isSubmitting={isProcessing}
+            >
+              <input type="hidden" name="redirectTo" value={redirectTo} />
+              <CardSection noBottomBorder py={2}>
+                {fetcher.data?.formError && (
+                  <ScrollAnimateUp delay={0}>
+                    <CustomAlert status="error">
+                      {fetcher.data?.formError}
+                    </CustomAlert>
+                  </ScrollAnimateUp>
+                )}
+              </CardSection>
+              <CardSection noBottomBorder py={6}>
+                <TextField
+                  formControlProps={{ labelProps: { color: "whiteAlpha.800" } }}
+                  bg="white"
+                  name="username"
+                  label="Username"
+                  placeholder="JohnDoe"
+                />
+                <TextField
+                  formControlProps={{ labelProps: { color: "whiteAlpha.800" } }}
+                  bg="white"
+                  name="password"
+                  label="Password"
+                  placeholder="Password"
+                  type="password"
+                />
+                <TextField
+                  formControlProps={{ labelProps: { color: "whiteAlpha.800" } }}
+                  bg="white"
+                  name="passwordConfirmation"
+                  label="Re-enter Password"
+                  placeholder="Re-enter Password"
+                  type="password"
+                />
+              </CardSection>
+              <CardSection noBottomBorder py={2}>
+                <PrimaryButton type="submit" isDisabled={isProcessing}>
+                  {isProcessing ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
+                </PrimaryButton>
+              </CardSection>
+            </ActionContextProvider>
+          </fetcher.Form>
+          <CardSection noBottomBorder py={4}>
+            <Link to="/login">
+              <OutlinedButton w="100%" isDisabled={isProcessing} colorScheme="whiteAlpha">
+                ALREADY HAVE AN ACCOUNT
+              </OutlinedButton>
+            </Link>
+          </CardSection>
         </ScrollAnimateUp>
       </VStack>
     </Hero>
