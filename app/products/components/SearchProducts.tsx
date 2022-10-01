@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import { Plus } from "tabler-icons-react";
+import { Link } from "@remix-run/react";
 import { TextField } from "~/core/components/CustomTextField";
 import { PrimaryButton } from "~/core/components/PrimaryButton";
 
@@ -14,10 +14,19 @@ export function SearchProducts ({ isProcessing }: Props) {
       justify={{ base: "center", lg: "flex-start" }}
       align={{ base: "flex-end", lg: "center" }}
       p={4} spacing={4}>
-      <TextField color="white" flexGrow={1} name="searchTerms" label="" placeholder="Find a product..." />
-      <PrimaryButton rightIcon={<Plus />} isDisabled={isProcessing}>
-        New Product
-      </PrimaryButton>
+      <TextField
+        color="white"
+        flexGrow={1}
+        name="searchTerms"
+        label=""
+        placeholder="Find a product..."
+        isDisabled={isProcessing}
+      />
+      <Link to="/products/new">
+        <PrimaryButton>
+          New Product
+        </PrimaryButton>
+      </Link>
     </Stack>
   )
 }
