@@ -15,10 +15,10 @@ export function ProductListItem ({ id, name, description }: Props) {
         <PrimaryButton size="lg" variant="link">
           {name}
         </PrimaryButton>
-        <Text fontSize="sm" color="white">
-          {description}
-        </Text>
       </Link>
+      <Text fontSize="sm" color="white">
+        {description}
+      </Text>
     </VStack>
   )
 }
