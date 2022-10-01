@@ -15,7 +15,7 @@ model Product {
   name        String
   description String @db.Text()
 
-  Issue Issue[]
+  issues Issue[]
 }
 
 model User {
@@ -26,7 +26,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   password String
-  Comment  Comment[]
+  comments Comment[]
 }
 
 model Issue {
@@ -41,7 +41,7 @@ model Issue {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Comment Comment[]
+  comments Comment[]
 }
 
 model Comment {
