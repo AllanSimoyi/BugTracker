@@ -14,6 +14,7 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { ClientStyleContext, ServerStyleContext } from './context';
 import { getUser } from './session.server';
 import customStylesUrl from "./styles/custom.css";
+import theme from './theme';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -90,7 +91,7 @@ export async function loader({ request }: LoaderArgs) {
 export default function App() {
   return (
     <Document>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Outlet />
       </ChakraProvider>
     </Document>
