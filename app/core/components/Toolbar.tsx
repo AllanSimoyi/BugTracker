@@ -31,7 +31,7 @@ export function Toolbar (props: Props) {
                 {currentUser.username}
               </Text>
               <Form action="/logout" method="post">
-                <OutlinedButton type="submit" w="100%" colorScheme="whiteAlpha">
+                <OutlinedButton size="sm" type="submit" w="100%" colorScheme="whiteAlpha">
                   Log Out
                 </OutlinedButton>
               </Form>
