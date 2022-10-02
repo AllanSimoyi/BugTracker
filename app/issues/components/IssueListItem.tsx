@@ -9,7 +9,8 @@ import { CLOSED_ISSUE, OPEN_ISSUE } from "../lib/issues";
 dayjs.extend(relativeTime);
 
 interface Props {
-  id: number;
+  productId: number;
+  issueId: number;
   state: string;
   title: string;
   createdAt: Date;
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export function IssueListItem (props: Props) {
-  const { id, state, title, createdAt, numComments } = props;
+  const { productId, issueId, state, title, createdAt, numComments } = props;
   return (
     <VStack align="flex-start" p={4}>
       <HStack align="center">
@@ -27,14 +28,14 @@ export function IssueListItem (props: Props) {
         {state === CLOSED_ISSUE && (
           <Check color="gray" />
         )}
-        <Link to={`/products/${ id }`}>
+        <Link to={`/products/${ productId }/issues/${ issueId }`}>
           <PrimaryButton size="lg" variant="link" color="white">
             {title}
           </PrimaryButton>
         </Link>
       </HStack>
       <Text fontSize="sm" color="whiteAlpha.800">
-        Created {dayjs(createdAt).fromNow()} &middot; {numComments} comments
+        Created {dayjs(createdAt).fromNow()} &middot; {numComments} comment(s)
       </Text>
     </VStack>
   )
