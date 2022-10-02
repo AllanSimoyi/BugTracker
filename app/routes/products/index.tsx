@@ -1,7 +1,7 @@
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, VStack, Link as ChakraLink } from "@chakra-ui/react";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useCatch, useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import { Link, useCatch, useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import { z } from "zod";
 import { ActionContextProvider } from "~/core/components/ActionContextProvider";
 import { CustomCatchBoundary } from "~/core/components/CustomCatchBoundary";
@@ -71,6 +71,13 @@ export default function Index () {
 
   return (
     <>
+      <VStack align="flex-start" p={4}>
+        <Link to="/products">
+          <ChakraLink color="teal.400" size="sm">
+            Products
+          </ChakraLink>
+        </Link>
+      </VStack>
       <fetcher.Form method="get">
         <ActionContextProvider
           fields={relevantInput}
