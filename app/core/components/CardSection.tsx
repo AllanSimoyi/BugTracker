@@ -7,15 +7,12 @@ interface Props extends StackProps {
 }
 
 export function CardSection (props: Props) {
-  const { children, noBottomBorder = false, ...rest } = props
+  const { children, ...rest } = props
   return (
     <VStack
       p={rest.p || 4}
       justify="center"
       align="stretch"
-      borderBottom={noBottomBorder ? undefined : "1px"}
-      borderColor={noBottomBorder ? undefined : "gray.300"}
-      borderStyle={noBottomBorder ? undefined : "dashed"}
       {...rest}
     >
       {children}
