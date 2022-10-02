@@ -1,8 +1,13 @@
-import { Heading, Text, VStack } from "@chakra-ui/react";
-import type { ActionArgs, LoaderArgs, MetaFunction} from "@remix-run/node";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink, Text, VStack
+} from '@chakra-ui/react';
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useCatch, useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import { Link, useCatch, useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import * as React from "react";
+import { ChevronRight } from 'tabler-icons-react';
 import { z } from "zod";
 import { ActionContextProvider } from "~/core/components/ActionContextProvider";
 import { CardSection } from "~/core/components/CardSection";
@@ -13,7 +18,7 @@ import { CustomTextArea } from "~/core/components/CustomTextArea";
 import { TextField } from "~/core/components/CustomTextField";
 import { PrimaryButton } from "~/core/components/PrimaryButton";
 import { ScrollAnimateUp } from "~/core/components/ScrollAnimateUp";
-import type { inferSafeParseErrors} from "~/core/validations";
+import type { inferSafeParseErrors } from "~/core/validations";
 import { badRequest, PositiveIntSchema } from "~/core/validations";
 import { prisma } from "~/db.server";
 import { OPEN_ISSUE } from "~/issues/lib/issues";
@@ -103,11 +108,23 @@ export default function NewIssue () {
                 </ScrollAnimateUp>
               )}
             </CardSection>
-            <CardSection noBottomBorder spacing={6} py={6}>
+            <CardSection noBottomBorder spacing={6} py={4}>
               <VStack align="flex-start">
-                <Heading role="heading" size="md" color="white">
-                  {product.name} &middot; Record Issue
-                </Heading>
+                <Breadcrumb spacing='8px' separator={<ChevronRight color='white' />}>
+                  <BreadcrumbItem color="teal.400">
+                    <BreadcrumbLink as={Link} to="/products">
+                      Products
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem color="teal.400">
+                    <BreadcrumbLink as={Link} to={`/products/${ product.id }`}>
+                      {product.name}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem color="white" isCurrentPage>
+                    <Text>Record Issue</Text>
+                  </BreadcrumbItem>
+                </Breadcrumb>
                 <Text fontSize="sm" color="white">
                   {product.description}
                 </Text>

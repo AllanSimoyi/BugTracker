@@ -1,10 +1,14 @@
-import { Heading, HStack, Spacer, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink, HStack, Spacer, Stack, Text, VStack
+} from '@chakra-ui/react';
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, useCatch, useLoaderData, useNavigate, useTransition } from "@remix-run/react";
 import { redirect } from "@remix-run/server-runtime";
 import { useCallback } from "react";
-import { Check, Focus } from "tabler-icons-react";
+import { Check, ChevronRight, Focus } from "tabler-icons-react";
 import { CustomCatchBoundary } from "~/core/components/CustomCatchBoundary";
 import { CustomErrorBoundary } from "~/core/components/CustomErrorBoundary";
 import { DeleteConfirmation } from "~/core/components/DeleteConfirmation";
@@ -121,9 +125,16 @@ export default function ProductPage () {
       <VStack align="stretch" spacing={8}>
         <Stack direction={{ base: "column", lg: "row" }} align={{ base: "flex-start", lg: "center" }} spacing={4}>
           <VStack align="flex-start">
-            <Heading role="heading" size="md" color="white">
-              {product.name}
-            </Heading>
+            <Breadcrumb spacing='8px' separator={<ChevronRight color='white' />}>
+              <BreadcrumbItem color="teal.400">
+                <BreadcrumbLink as={Link} to="/products">
+                  Products
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem color="white" isCurrentPage>
+                <Text size="sm">{product.name}</Text>
+              </BreadcrumbItem>
+            </Breadcrumb>
             <Text fontSize="sm" color="white">
               {product.description}
             </Text>
@@ -147,7 +158,7 @@ export default function ProductPage () {
           </Form>
         </Stack>
         <ScrollAnimation variants={getSlideUpScrollVariants({ delay: 0.1 })}>
-          <VStack align="stretch" border="1px" spacing={2} borderRadius={5} borderColor="whiteAlpha.100">
+          <VStack align="stretch" border="1px" spacing={2} borderRadius={5} borderColor="whiteAlpha.400">
             <HStack align="center" spacing={2} bgColor="whiteAlpha.50" borderRadius={5} py={2}>
               <Link to={`/products/${ product.id }?state=${ OPEN_ISSUE }`}>
                 <PrimaryButton fontWeight={issueState === OPEN_ISSUE ? "bold" : "normal"} variant="ghost" leftIcon={<Focus />} colorScheme="whiteAlpha">
@@ -172,7 +183,8 @@ export default function ProductPage () {
                 {product.issues.map(issue => (
                   <IssueListItem
                     key={issue.id}
-                    id={issue.id}
+                    productId={product.id}
+                    issueId={issue.id}
                     state={issue.state}
                     title={issue.title}
                     createdAt={new Date(issue.createdAt)}

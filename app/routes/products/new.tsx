@@ -1,8 +1,13 @@
-import { VStack } from "@chakra-ui/react";
-import type { ActionArgs, LoaderArgs, MetaFunction} from "@remix-run/node";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink, Text, VStack
+} from '@chakra-ui/react';
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { useCatch, useFetcher, useNavigate } from "@remix-run/react";
+import { Link, useCatch, useFetcher, useNavigate } from "@remix-run/react";
 import * as React from "react";
+import { ChevronRight } from 'tabler-icons-react';
 import { z } from "zod";
 import { ActionContextProvider } from "~/core/components/ActionContextProvider";
 import { CardSection } from "~/core/components/CardSection";
@@ -76,15 +81,27 @@ export default function NewProduct () {
             formError={fetcher.data?.formError}
             isSubmitting={isProcessing}
           >
-            <CardSection noBottomBorder py={2}>
-              {fetcher.data?.formError && (
+            <CardSection py={4}>
+              <Breadcrumb spacing='8px' separator={<ChevronRight color='white' />}>
+                <BreadcrumbItem color="teal.400">
+                  <BreadcrumbLink as={Link} to="/products">
+                    Products
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem color="white" isCurrentPage>
+                  <Text size="sm">Add Product</Text>
+                </BreadcrumbItem>
+              </Breadcrumb>
+            </CardSection>
+            {fetcher.data?.formError && (
+              <CardSection noBottomBorder py={2}>
                 <ScrollAnimateUp delay={0.25}>
                   <CustomAlert status="error">
                     {fetcher.data.formError}
                   </CustomAlert>
                 </ScrollAnimateUp>
-              )}
-            </CardSection>
+              </CardSection>
+            )}
             <CardSection noBottomBorder spacing={6} py={6}>
               <TextField
                 formControlProps={{ labelProps: { color: "whiteAlpha.800" } }}

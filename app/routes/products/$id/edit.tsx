@@ -1,8 +1,13 @@
-import { VStack } from "@chakra-ui/react";
-import type { ActionArgs, LoaderArgs, MetaFunction} from "@remix-run/node";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink, Text, VStack
+} from '@chakra-ui/react';
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useCatch, useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import { Link, useCatch, useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import * as React from "react";
+import { ChevronRight } from 'tabler-icons-react';
 import { z } from "zod";
 import { ActionContextProvider } from "~/core/components/ActionContextProvider";
 import { CardSection } from "~/core/components/CardSection";
@@ -13,7 +18,7 @@ import { CustomTextArea } from "~/core/components/CustomTextArea";
 import { TextField } from "~/core/components/CustomTextField";
 import { PrimaryButton } from "~/core/components/PrimaryButton";
 import { ScrollAnimateUp } from "~/core/components/ScrollAnimateUp";
-import type { inferSafeParseErrors} from "~/core/validations";
+import type { inferSafeParseErrors } from "~/core/validations";
 import { badRequest, PositiveIntSchema } from "~/core/validations";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
@@ -103,15 +108,34 @@ export default function EditProduct () {
             formError={fetcher.data?.formError}
             isSubmitting={isProcessing}
           >
-            <CardSection noBottomBorder py={2}>
-              {fetcher.data?.formError && (
+            <CardSection py={2}>
+              <VStack align="flex-start" py={4}>
+                <Breadcrumb spacing='8px' separator={<ChevronRight color='white' />}>
+                  <BreadcrumbItem color="teal.400">
+                    <BreadcrumbLink as={Link} to="/products">
+                      Products
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem color="teal.400">
+                    <BreadcrumbLink as={Link} to={`/products/${ product.id }`}>
+                      {product.name}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem color="white" isCurrentPage>
+                    <Text>Edit</Text>
+                  </BreadcrumbItem>
+                </Breadcrumb>
+              </VStack>
+            </CardSection>
+            {fetcher.data?.formError && (
+              <CardSection noBottomBorder py={2}>
                 <ScrollAnimateUp delay={0.25}>
                   <CustomAlert status="error">
                     {fetcher.data.formError}
                   </CustomAlert>
                 </ScrollAnimateUp>
-              )}
-            </CardSection>
+              </CardSection>
+            )}
             <CardSection noBottomBorder py={6}>
               <TextField
                 formControlProps={{ labelProps: { color: "whiteAlpha.800" } }}
