@@ -1,7 +1,7 @@
-import { Heading, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, Outlet, useCatch, useLoaderData, useNavigate } from "@remix-run/react";
+import { Outlet, useCatch, useLoaderData, useNavigate } from "@remix-run/react";
 import { CustomCatchBoundary } from "~/core/components/CustomCatchBoundary";
 import { CustomErrorBoundary } from "~/core/components/CustomErrorBoundary";
 
@@ -24,13 +24,6 @@ export default function Index () {
       <Toolbar currentUser={currentUser} />
       <VStack align="stretch" py={6}>
         <CenteredView flexGrow={1}>
-          <VStack align="flex-start">
-            <Link to="/products">
-              <Heading role="heading" size="md" color="white" px={4}>
-                Products
-              </Heading>
-            </Link>
-          </VStack>
           <Outlet />
         </CenteredView>
       </VStack>
